@@ -117,7 +117,7 @@ class ParallelExecution:
         count_no_improvement = 0
         for iteration in range(self.iteration_max):
 
-            print(f"Thread:{thread+1} - Iteration:{iteration+1} - Best Cost:{local.best_cost} - No Improvemente: {count_no_improvement}")
+            print(f"Thread:{int(thread)+1} - Iteration:{iteration+1} - Best Cost:{local.best_cost} - No Improvemente: {count_no_improvement}")
             inital_cost = local.best_cost
 
 
