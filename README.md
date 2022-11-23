@@ -13,7 +13,7 @@ Instances were found at http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/
 For initial solution it was used the Nearest Neighbour method.
 
 ### Local Search
-For local search  it was used the 2-opt mehto.
+For local search  it was used the 2-opt method.
 
 ### Pertubation
 Sequential pertubation switches a random city and its right neighbour.
