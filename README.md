@@ -17,6 +17,8 @@ For local search  it was used the 2-opt method.
 
 ### Pertubation
 Sequential pertubation switches a random city and its right neighbour.
+
+
 Parallel pertubation switches two random cities.
 
 ## Results
