@@ -6,6 +6,8 @@ This project solves the Traveling Salesman Problem with metaheuristic Iterated L
 To run the project set up desired config (Parallel or Sequential, number of threads, number of max iterations) in ``driver.py`` then run it.
 The results will be save in the folder ``\results``.
 
+ Module ``tsplib95`` is a requirement for loading instances.
+
 ### Instances
 Instances were found at http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/
 

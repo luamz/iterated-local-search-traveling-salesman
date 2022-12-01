@@ -4,11 +4,12 @@ import time
 import pathlib
 import sys
 
+
 class SequentialExecution:
 
-    def __init__(self, instance, max):
+    def __init__(self, instance, max_iterations):
         self.instance = instance
-        self.iteration_max = max
+        self.iteration_max = max_iterations
 
         self.problem = tsplib95.load(f'{pathlib.Path(__file__).parent.resolve()}/instances/{instance}.tsp')
         self.problem.get_graph()
@@ -27,10 +28,11 @@ class SequentialExecution:
         if self.problem_description['EDGE_WEIGHT_TYPE'] == 'EUC_2D':
             for i in range(1, self.n_cities + 1):
                 x, y = self.problem_description['NODE_COORD_SECTION'][i]
-                self.coord_x.append(x); self.coord_y.append(y)
+                self.coord_x.append(x)
+                self.coord_y.append(y)
 
-    def distance_cities(self, city_A, city_B):
-        coord = city_A + 1, city_B + 1
+    def distance_cities(self, city_a, city_b):
+        coord = city_a + 1, city_b + 1
         return self.problem.get_weight(*coord)
 
     def route_cost(self, cities):
@@ -66,14 +68,14 @@ class SequentialExecution:
 
         return solution_cities
 
-
     def two_opt_local_search(self, cities):
         best_route = cities[:]
         best_cost = self.route_cost(best_route)
         improved = False
         for i in range(1, self.n_cities - 2):
             for j in range(i + 1, self.n_cities):
-                if j - i == 1: continue
+                if j - i == 1:
+                    continue
                 current_route = cities[:]
                 current_route[i:j] = current_route[j - 1:i - 1:-1]
                 new_cost = self.route_cost(current_route)
@@ -88,18 +90,16 @@ class SequentialExecution:
         else:
             return cities
 
-
     def perturbation(self, cities):
         i = random.randint(0, self.n_cities - 1)
         j = 0
-        if i != self.n_cities - 1 and i!=j:
+        if i != self.n_cities - 1 and i != j:
             j = i + 1
 
         temp = cities[i]
         cities[i] = cities[j]
         cities[j] = temp
         return cities
-
 
     def ils(self):
         start_time = time.time()
@@ -110,7 +110,7 @@ class SequentialExecution:
         # print(f"Initial City: {initial_city}")
 
         solution = self.nearest_neighbour(initial_city)
-        cost = self.route_cost(solution)
+        # cost = self.route_cost(solution)
         # print(f"Initial Route: {solution} - Initial Route Cost: {cost}")
 
         # Local Search
@@ -123,7 +123,7 @@ class SequentialExecution:
         # Iterations
         count_no_improvement = 0
         for iteration in range(self.iteration_max):
-            print(f"Iteration:{iteration+1} - Best Cost:{self.best_cost} - No Improvemente: {count_no_improvement}")
+            print(f"Iteration:{iteration + 1} - Best Cost:{self.best_cost} - No Improvemente: {count_no_improvement}")
 
             inital_cost = self.best_cost
 
@@ -148,7 +148,7 @@ class SequentialExecution:
             if self.best_cost == inital_cost:
                 count_no_improvement = count_no_improvement + 1
 
-            if abs(self.best_cost - local_search_cost) /self.best_cost > 0.01:
+            if abs(self.best_cost - local_search_cost) / self.best_cost > 0.01:
                 self.best_solution = solution[:]
 
         end_time = time.time()
@@ -158,10 +158,9 @@ class SequentialExecution:
         print("Route Cost  : %d" % self.best_cost)
         print("Processing Time : %f" % total_time)
         print(f"Route Solution {self.best_solution}")
-        f = open(f"{pathlib.Path(__file__).parent.resolve()}/results/results_sequential_{self.instance}.xlsx","a")
+        f = open(f"{pathlib.Path(__file__).parent.resolve()}/results/results_sequential_{self.instance}.xlsx", "a")
         f.write(f"{initial_city},{self.best_cost},{total_time}\n")
         f.close()
-
 
     def run(self):
         self.ils()
